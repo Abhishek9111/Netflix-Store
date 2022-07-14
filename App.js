@@ -18,7 +18,7 @@ const App =()=>{
     <NavigationContainer>
       
       
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName='Add'>
       <Stack.Screen
         name = 'Home'
         component={Home}
