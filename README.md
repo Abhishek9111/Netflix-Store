@@ -1,10 +1,5 @@
 <h1 align="center">Welcome to Netflix-Store 👋</h1>
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
-  <a href="https://twitter.com/Abhishek9111" target="_blank">
-    <img alt="Twitter: Abhishek9111" src="https://img.shields.io/twitter/follow/Abhishek9111.svg?style=social" />
-  </a>
-</p>
+
 
 > A simple web series/ movies tracker made for Netflix App with the help of React Native Framework, the following project helps in exploring the use of local storage for persistent data and use case of multiple screens
 
