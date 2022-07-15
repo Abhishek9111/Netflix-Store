@@ -15,10 +15,10 @@ const Stack = createStackNavigator()
 const App =()=>{
   return(
     <>
-    <NavigationContainer>
+    <NavigationContainer>``
       
       
-      <Stack.Navigator initialRouteName='Add'>
+      <Stack.Navigator initialRouteName='Home'>
       <Stack.Screen
         name = 'Home'
         component={Home}
