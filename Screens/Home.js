@@ -20,6 +20,8 @@ import {
 } from 'native-base'
 
 import AsyncStorage from '@react-native-community/async-storage'
+import { useIsFocused } from '@react-navigation/native' //custom hook by 3rd party library, can be used in react too
+
 
 
 const Home = ({navigation, route})=>{
@@ -27,6 +29,9 @@ const Home = ({navigation, route})=>{
   const [listOfSeasons,setListOfSeasons] = useState([])
   const [loading,setLoading] = useState(false)
   
+  const isFocused = useIsFocused()    //this is used to render the screen while we navigate the screen from add to home
+                                      //this in turn will display the newly added value into the home screen so we don't
+                                      //have to restart the app again and again
 
   const getList = async()=>{
 
@@ -42,19 +47,30 @@ const Home = ({navigation, route})=>{
 
   }
 
-  const deleteSeason = async()=>{
+  const deleteSeason = async(id)=>{
 
+    const newList = await listOfSeasons.filter((list)=>list.id !== id)    //will remove the item with the id specified in the call back
+    await AsyncStorage.setItem('@season_list', JSON.stringify(newList))
+    setListOfSeasons[newList]
 
   }
 
-  const markComplete = async()=>{
+  const markComplete = async(id)=>{
 
+    const newArr = listOfSeasons.map((list)=>{
+      if(list.id == id){
+        list.isWatched = !list
+      }
+      return list
+    })
 
+    await AsyncStorage.setItem('@season_list', JSON.stringify(newArr))
+    setListOfSeasons[newArr]
   }
 
   useEffect(()=>{
     getList();
-  },[])
+  },[isFocused])
 
   if(loading) {
     return(             //indicator/animation while the data is being fetched and being loaded
@@ -87,10 +103,18 @@ const Home = ({navigation, route})=>{
                <ListItem key={season.id} style={styles.listItem}
                noBorder>
                  <Left>
-                   <Button style={styles.actionButton} danger>
+                   <Button 
+                   style={styles.actionButton}
+                   danger
+                   onPress={()=>deleteSeason(season.id)}
+                   >
                        <Icon name='trash' active />
                    </Button>
-                   <Button style={styles.actionButton} >
+                   <Button style={styles.actionButton} 
+                   onPress={()=>{
+                    navigation.navigate('Edit',{season})
+                   }}
+                   >
                        <Icon active name='edit' type='Feather ' />
                    </Button>
                  </Left>
@@ -103,7 +127,10 @@ const Home = ({navigation, route})=>{
  
                  </Body>
                  <Right>
-                   <Checkbox/>               
+                   <Checkbox
+                   Checked = {season.isWatched}
+                   onPress={()=>markComplete(season.id)}
+                   />               
                  </Right>
                  
                </ListItem>
